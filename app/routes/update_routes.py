@@ -2,6 +2,7 @@ from flask import Blueprint, request, render_template, redirect, url_for, flash
 from datetime import datetime
 from .. import db
 from ..models.project import Project
+from flask_login import login_required
 import os
 
 update_bp = Blueprint('update', __name__, url_prefix="/update")
@@ -10,6 +11,7 @@ UPDATE_FOLDER = "updates"
 os.makedirs(UPDATE_FOLDER, exist_ok=True)
 
 @update_bp.route("/", methods=["GET", "POST"])
+@login_required
 def update_file():
     if request.method == "POST":
         project_name = request.form.get("project_name")

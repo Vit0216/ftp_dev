@@ -2,6 +2,7 @@ from flask import Blueprint, request, render_template, redirect, url_for, flash
 from datetime import datetime
 from .. import db
 from ..models.project import Project
+from flask_login import login_required
 import os
 
 delete_bp = Blueprint('delete', __name__, url_prefix="/delete")
@@ -9,6 +10,7 @@ delete_bp = Blueprint('delete', __name__, url_prefix="/delete")
 UPLOAD_FOLDER = "uploads"
 
 @delete_bp.route("/", methods=["GET", "POST"])
+@login_required
 def delete_file():
     if request.method == "POST":
         project_name = request.form.get("project_name")

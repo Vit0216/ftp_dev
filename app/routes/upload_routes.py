@@ -2,6 +2,7 @@ from flask import Blueprint, request, render_template, redirect, url_for, flash
 from datetime import datetime
 from .. import db
 from ..models.project import Project
+from flask_login import login_required
 import os
 
 upload_bp = Blueprint('upload', __name__, url_prefix="/upload")
@@ -12,12 +13,14 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Rota para listar arquivos ativos
 @upload_bp.route("/", methods=["GET"])
+@login_required
 def index():
     projects = Project.query.filter_by(delete_date=None).all()
     return render_template("index.html", projects=projects)
 
 # Rota para novo upload
 @upload_bp.route("/new", methods=["GET", "POST"])
+@login_required
 def upload_file():
     if request.method == "POST":
         project_name = request.form.get("project_name")
